@@ -45,3 +45,16 @@ target_link_libraries(minerva_demo PRIVATE minerva_core)
 
 add_executable(benchmark_nlist examples/benchmark_nlist.cpp)
 target_link_libraries(benchmark_nlist PRIVATE minerva_core)
+
+# Additional examples
+add_executable(example_highdrop examples/example_highdrop.cpp)
+target_link_libraries(example_highdrop PRIVATE minerva_core)
+
+add_executable(example_md_large examples/example_md_large.cpp)
+target_link_libraries(example_md_large PRIVATE minerva_core)
+
+add_executable(example_multiscale examples/example_multiscale.cpp)
+target_link_libraries(example_multiscale PRIVATE minerva_core)
+
+add_executable(example_collision examples/example_collision.cpp)
+target_link_libraries(example_collision PRIVATE minerva_core)

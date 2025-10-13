@@ -29,13 +29,24 @@ cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 cmake --build build -j$(sysctl -n hw.ncpu)
 ```
 
-### Running the Demo
+### Running Examples
 
+**Basic demo:**
 ```bash
 ./build/minerva_demo
 ```
 
-This will run a simulation with 125 rigid spheres falling onto a ground plane and 216 molecular dynamics particles interacting via Lennard-Jones forces. Output files are written to `output/` directory.
+This runs a simulation with 125 rigid spheres and 216 MD particles.
+
+**Additional examples:**
+```bash
+./build/example_highdrop     # 960 spheres falling from height
+./build/example_md_large     # 512 particles with neighbor lists
+./build/example_multiscale   # Combined RB + MD simulation
+./build/example_collision    # Dramatic collision cascade
+```
+
+See [examples/README.md](examples/README.md) for detailed descriptions and videos.
 
 ### Visualizing Results
 
