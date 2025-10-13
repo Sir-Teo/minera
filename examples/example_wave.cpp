@@ -11,60 +11,56 @@
 using namespace minerva;
 
 /**
- * Example: Wave Propagation
+ * Example: Radial Impact Wave
  *
- * Grid of spheres with one edge given initial displacement, creating
- * a wave that propagates through the grid via collisions.
+ * Tightly packed grid of spheres on the ground. A projectile strikes
+ * one corner creating a radial shockwave that propagates through the grid.
  */
 int main(){
   World world;
-  world.gravity = Vec3(0, -5.0, 0);
+  world.gravity = Vec3(0, -9.81, 0);
 
-  const int grid_x = 15;
-  const int grid_z = 15;
-  const double spacing = 0.5;
+  const int grid_x = 20;
+  const int grid_z = 20;
+  const double spacing = 0.41; // Tight spacing (diameter is 0.4)
 
-  // Create a grid of spheres
+  // Create a tightly packed grid of spheres on the ground
   for (int i = 0; i < grid_x; ++i){
     for (int k = 0; k < grid_z; ++k){
       RigidBody rb;
       rb.radius = 0.2;
       rb.mass = 1.0;
 
-      // Position in grid
+      // Position on ground in tight grid
       rb.position = Vec3(
-        -3.5 + i * spacing,
-        1.0,
-        -3.5 + k * spacing
+        -4.0 + i * spacing,
+        0.2,  // Just above ground
+        -4.0 + k * spacing
       );
 
-      // Give edge a wave-like initial velocity
-      if (i == 0){
-        // Sinusoidal initial velocity along one edge
-        double phase = 2.0 * M_PI * k / grid_z;
-        rb.velocity = Vec3(
-          3.0 * std::sin(phase),
-          0,
-          0
-        );
-      } else {
-        rb.velocity = Vec3(0, 0, 0);
-      }
-
+      rb.velocity = Vec3(0, 0, 0);
       world.rigid_bodies.push_back(rb);
     }
   }
 
-  MINERVA_LOG("Wave Propagation: %zu spheres in grid pattern\n",
+  // Add a projectile to create impact wave
+  RigidBody projectile;
+  projectile.radius = 0.3;
+  projectile.mass = 5.0; // Heavy projectile
+  projectile.position = Vec3(-4.5, 5.0, -4.5); // Above corner
+  projectile.velocity = Vec3(8.0, -10.0, 8.0); // Fast diagonal strike
+  world.rigid_bodies.push_back(projectile);
+
+  MINERVA_LOG("Radial Impact Wave: %zu spheres + 1 projectile\n",
               world.rigid_bodies.size());
 
   // Check and resolve initial overlaps
   resolve_initial_overlaps(world, 50);
   check_rigid_body_overlaps(world);
 
-  // System with high restitution for wave propagation
+  // System with very high restitution for wave propagation
   RigidBodySystemConfig rb_cfg;
-  rb_cfg.restitution = 0.8;
+  rb_cfg.restitution = 0.9;
   rb_cfg.ground_y = 0.0;
   rb_cfg.substeps = 4;
   rb_cfg.pair_iterations = 24;
