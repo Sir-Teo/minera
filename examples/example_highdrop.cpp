@@ -31,8 +31,8 @@ int main(){
         rb.radius = 0.2;
         rb.mass   = 1.0;
         rb.position = Vec3(-1.75 + x*spacing, 8.0 + y*spacing, -1.75 + z*spacing);
-        // Add slight initial velocity for more dynamic behavior
-        rb.velocity = Vec3(0, -0.5, 0);
+        // No initial velocity - let gravity accelerate naturally to avoid overlaps
+        rb.velocity = Vec3(0, 0, 0);
         world.rigid_bodies.push_back(rb);
       }
     }
@@ -44,10 +44,10 @@ int main(){
   RigidBodySystemConfig rb_cfg;
   rb_cfg.restitution = 0.7;
   rb_cfg.ground_y = 0.0;
-  // Tighter collision solving for dense stacks
-  rb_cfg.substeps = 8;
-  rb_cfg.pair_iterations = 64;
-  rb_cfg.penetration_slop = 1e-5;
+  // Reasonable collision solving - no initial velocity means less aggressive solving needed
+  rb_cfg.substeps = 4;
+  rb_cfg.pair_iterations = 32;
+  rb_cfg.penetration_slop = 1e-4;
 
   world.scheduler.add(std::make_unique<RigidBodySystem>(rb_cfg), 1);
 

@@ -29,7 +29,7 @@ int main(){
         rb.radius = 0.3;
         rb.mass   = 2.0;
         rb.position = Vec3(-1.5 + i*1.0, 6.0 + j*1.2, 0.0);
-        rb.velocity = Vec3(0, -1.0, 0);
+        rb.velocity = Vec3(0, 0, 0); // No initial velocity to prevent overlap
         world.rigid_bodies.push_back(rb);
       }
     }
