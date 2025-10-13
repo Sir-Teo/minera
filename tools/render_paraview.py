@@ -100,14 +100,49 @@ def render_rigid_bodies(pvd_file, output_dir, image_format='png', frame_rate=30)
 
     display.SetScalarBarVisibility(view, True)
 
-    # Reset camera to fit ALL data (will compute bounds automatically)
-    view.ResetCamera()
+    # Compute bounds across ALL timesteps for proper camera framing
+    timesteps = reader.TimestepValues
+    if len(timesteps) > 1:
+        # Sample several timesteps to get full spatial extent
+        sample_indices = [0, len(timesteps)//4, len(timesteps)//2, 3*len(timesteps)//4, len(timesteps)-1]
+        bounds_min = [float('inf')] * 3
+        bounds_max = [float('-inf')] * 3
 
-    # Adjust camera for better angle (isometric-style view)
-    camera = GetActiveCamera()
-    camera.Elevation(20)
-    camera.Azimuth(30)
-    view.CameraViewUp = [0, 1, 0]
+        for idx in sample_indices:
+            view.ViewTime = timesteps[idx]
+            Render(view)
+            data_info = reader.GetDataInformation()
+            bounds = data_info.DataInformation.GetBounds()
+
+            bounds_min[0] = min(bounds_min[0], bounds[0])
+            bounds_max[0] = max(bounds_max[0], bounds[1])
+            bounds_min[1] = min(bounds_min[1], bounds[2])
+            bounds_max[1] = max(bounds_max[1], bounds[3])
+            bounds_min[2] = min(bounds_min[2], bounds[4])
+            bounds_max[2] = max(bounds_max[2], bounds[5])
+
+        # Reset to first frame
+        view.ViewTime = timesteps[0]
+
+        # Manually set camera to encompass full bounds
+        center = [(bounds_min[i] + bounds_max[i]) / 2 for i in range(3)]
+        extent = [(bounds_max[i] - bounds_min[i]) for i in range(3)]
+        max_extent = max(extent)
+
+        camera = GetActiveCamera()
+        camera.SetFocalPoint(center[0], center[1], center[2])
+
+        # Position camera at a distance to fit all data
+        distance = max_extent * 2.5
+        camera.SetPosition(center[0] + distance*0.5, center[1] + distance*0.6, center[2] + distance*0.8)
+        camera.SetViewUp(0, 1, 0)
+    else:
+        # Single timestep - use regular ResetCamera
+        view.ResetCamera()
+        camera = GetActiveCamera()
+        camera.Elevation(20)
+        camera.Azimuth(30)
+        view.CameraViewUp = [0, 1, 0]
 
     return reader, view, display
 

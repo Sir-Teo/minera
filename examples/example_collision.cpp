@@ -20,13 +20,14 @@ int main(){
 
   // Left group - moving right
   const int n_left = 6;
+  const double spacing = 0.6; // Increased spacing to prevent overlap
   for (int y=0; y<n_left; ++y){
     for (int z=0; z<n_left; ++z){
       RigidBody rb;
       rb.radius = 0.25;
       rb.mass   = 1.0;
-      rb.position = Vec3(-3.0, 0.5 + y*0.55, -1.5 + z*0.55);
-      rb.velocity = Vec3(3.0, 0, 0); // Moving right
+      rb.position = Vec3(-3.5, 0.5 + y*spacing, -1.5 + z*spacing);
+      rb.velocity = Vec3(2.0, 0, 0); // Reduced velocity for cleaner collision
       world.rigid_bodies.push_back(rb);
     }
   }
@@ -38,8 +39,8 @@ int main(){
       RigidBody rb;
       rb.radius = 0.25;
       rb.mass   = 1.0;
-      rb.position = Vec3(3.0, 0.5 + y*0.55, -1.5 + z*0.55);
-      rb.velocity = Vec3(-3.0, 0, 0); // Moving left
+      rb.position = Vec3(3.5, 0.5 + y*spacing, -1.5 + z*spacing);
+      rb.velocity = Vec3(-2.0, 0, 0); // Reduced velocity for cleaner collision
       world.rigid_bodies.push_back(rb);
     }
   }
@@ -51,7 +52,7 @@ int main(){
       RigidBody rb;
       rb.radius = 0.25;
       rb.mass   = 1.0;
-      rb.position = Vec3(0.0, 0.5 + y*0.55, -1.0 + z*0.55);
+      rb.position = Vec3(0.0, 0.5 + y*spacing, -1.0 + z*spacing);
       rb.velocity = Vec3(0, 0, 0); // Stationary
       world.rigid_bodies.push_back(rb);
     }
