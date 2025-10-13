@@ -39,10 +39,10 @@ class Simulation {
 
         // Camera
         this.camera = {
-            distance: 15,
-            rotation: 0,
-            elevation: 0.5,
-            target: [0, 2, 0]
+            distance: 12,
+            rotation: Math.PI / 4,
+            elevation: 0.6,
+            target: [0, 1.5, 0]
         };
 
         this.init();
@@ -74,6 +74,9 @@ class Simulation {
 
         // Initialize simulation
         this.reset();
+
+        // Render initial frame
+        this.render();
     }
 
     createProgram() {
@@ -163,26 +166,30 @@ class Simulation {
         const numSpheres = this.params.numSpheres;
         const radius = this.params.sphereRadius;
 
-        // Create a pile of spheres
-        const layers = Math.ceil(Math.cbrt(numSpheres));
+        // Create a compact stack of spheres
+        const side = Math.ceil(Math.cbrt(numSpheres));
+        let count = 0;
 
-        for (let i = 0; i < numSpheres; i++) {
-            const layer = Math.floor(i / (layers * layers));
-            const inLayer = i % (layers * layers);
-            const x = (inLayer % layers) - layers / 2;
-            const z = Math.floor(inLayer / layers) - layers / 2;
-
-            this.bodies.push({
-                position: [x * radius * 2.2, 3 + layer * radius * 2.2, z * radius * 2.2],
-                velocity: [
-                    (Math.random() - 0.5) * 0.5,
-                    0,
-                    (Math.random() - 0.5) * 0.5
-                ],
-                radius: radius,
-                mass: 1.0,
-                color: this.hslToRgb(0.55 + Math.random() * 0.1, 0.8, 0.55)
-            });
+        for (let y = 0; y < side && count < numSpheres; y++) {
+            for (let x = 0; x < side && count < numSpheres; x++) {
+                for (let z = 0; z < side && count < numSpheres; z++) {
+                    this.bodies.push({
+                        position: [
+                            (x - side / 2) * radius * 2.5,
+                            1.0 + y * radius * 2.5,
+                            (z - side / 2) * radius * 2.5
+                        ],
+                        velocity: [0, 0, 0],
+                        radius: radius,
+                        mass: 1.0,
+                        // Alternate between orange and cyan for visibility
+                        color: count % 2 === 0 ?
+                            [1.0, 0.5, 0.2] :  // Orange
+                            [0.2, 0.8, 1.0]    // Cyan
+                    });
+                    count++;
+                }
+            }
         }
     }
 
@@ -239,6 +246,22 @@ class Simulation {
                 // Friction
                 body.velocity[0] *= 0.95;
                 body.velocity[2] *= 0.95;
+
+                // Stop if velocity is very small
+                if (Math.abs(body.velocity[1]) < 0.01) {
+                    body.velocity[1] = 0;
+                }
+            }
+
+            // Side boundaries - bounce back if going out of bounds
+            const bounds = 8;
+            if (Math.abs(body.position[0]) > bounds) {
+                body.position[0] = Math.sign(body.position[0]) * bounds;
+                body.velocity[0] *= -0.8;
+            }
+            if (Math.abs(body.position[2]) > bounds) {
+                body.position[2] = Math.sign(body.position[2]) * bounds;
+                body.velocity[2] *= -0.8;
             }
         });
 
