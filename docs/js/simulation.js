@@ -313,11 +313,12 @@ class Simulation {
 
     renderSphere(sphere) {
         const gl = this.gl;
-        const segments = 12;
+        const segments = 8;
         const positions = [];
         const colors = [];
+        const indices = [];
 
-        // Generate sphere vertices (icosphere-like)
+        // Generate sphere vertices
         for (let lat = 0; lat <= segments; lat++) {
             const theta = (lat * Math.PI) / segments;
             const sinTheta = Math.sin(theta);
@@ -333,7 +334,18 @@ class Simulation {
                 const z = sphere.position[2] + sphere.radius * sinPhi * sinTheta;
 
                 positions.push(x, y, z);
-                colors.push(...sphere.color, 1.0);
+                colors.push(...sphere.color, 0.9);
+            }
+        }
+
+        // Generate triangle indices
+        for (let lat = 0; lat < segments; lat++) {
+            for (let lon = 0; lon < segments; lon++) {
+                const first = lat * (segments + 1) + lon;
+                const second = first + segments + 1;
+
+                indices.push(first, second, first + 1);
+                indices.push(second, second + 1, first + 1);
             }
         }
 
@@ -347,8 +359,15 @@ class Simulation {
         gl.enableVertexAttribArray(this.colorLocation);
         gl.vertexAttribPointer(this.colorLocation, 4, gl.FLOAT, false, 0, 0);
 
-        // Draw as points (for performance)
-        gl.drawArrays(gl.POINTS, 0, positions.length / 3);
+        // Create and bind index buffer
+        if (!this.indexBuffer) {
+            this.indexBuffer = gl.createBuffer();
+        }
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+        // Draw triangles
+        gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
     }
 
     renderGroundPlane() {
