@@ -58,3 +58,18 @@ target_link_libraries(example_multiscale PRIVATE minerva_core)
 
 add_executable(example_collision examples/example_collision.cpp)
 target_link_libraries(example_collision PRIVATE minerva_core)
+
+add_executable(example_avalanche examples/example_avalanche.cpp)
+target_link_libraries(example_avalanche PRIVATE minerva_core)
+
+add_executable(example_newtons_cradle examples/example_newtons_cradle.cpp)
+target_link_libraries(example_newtons_cradle PRIVATE minerva_core)
+
+add_executable(example_gas_expansion examples/example_gas_expansion.cpp)
+target_link_libraries(example_gas_expansion PRIVATE minerva_core)
+
+add_executable(example_orbital_ring examples/example_orbital_ring.cpp)
+target_link_libraries(example_orbital_ring PRIVATE minerva_core)
+
+add_executable(example_domino_chain examples/example_domino_chain.cpp)
+target_link_libraries(example_domino_chain PRIVATE minerva_core)
