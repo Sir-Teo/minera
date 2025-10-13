@@ -15,7 +15,6 @@
                 <div class="nav-links">
                     <a href="#features">Features</a>
                     <a href="#examples">Examples</a>
-                    <a href="#playground">Playground</a>
                     <a href="https://github.com/anthropics/minera" target="_blank">GitHub</a>
                 </div>
             </div>
@@ -34,8 +33,7 @@
                     with a modular architecture.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#playground" class="btn btn-primary">Try Playground</a>
-                    <a href="https://github.com/anthropics/minera" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                    <a href="https://github.com/anthropics/minera" class="btn btn-primary" target="_blank">View on GitHub</a>
                 </div>
             </div>
             <div class="hero-visual">
@@ -138,100 +136,6 @@
         </div>
     </section>
 
-    <!-- Playground Section -->
-    <section id="playground" class="playground">
-        <div class="container">
-            <h2 class="section-title">Interactive Playground</h2>
-            <p class="section-subtitle">Experiment with physics parameters in real-time</p>
-
-            <div class="playground-content">
-                <div class="playground-controls">
-                    <div class="control-section">
-                        <h3>Simulation Type</h3>
-                        <div class="button-group">
-                            <button class="sim-type-btn active" data-type="rigid-body">Rigid Body</button>
-                            <button class="sim-type-btn" data-type="molecular">Molecular Dynamics</button>
-                            <button class="sim-type-btn" data-type="multiscale">Multi-Scale</button>
-                        </div>
-                    </div>
-
-                    <div class="control-section" id="rigid-body-controls">
-                        <h3>Rigid Body Parameters</h3>
-                        <div class="control-group">
-                            <label for="num-spheres">Number of Spheres: <span id="num-spheres-val">50</span></label>
-                            <input type="range" id="num-spheres" min="10" max="200" value="50" step="10">
-                        </div>
-                        <div class="control-group">
-                            <label for="gravity">Gravity (m/s²): <span id="gravity-val">9.81</span></label>
-                            <input type="range" id="gravity" min="0" max="20" value="9.81" step="0.1">
-                        </div>
-                        <div class="control-group">
-                            <label for="restitution">Restitution: <span id="restitution-val">0.5</span></label>
-                            <input type="range" id="restitution" min="0" max="1" value="0.5" step="0.05">
-                        </div>
-                        <div class="control-group">
-                            <label for="sphere-radius">Sphere Radius: <span id="sphere-radius-val">0.25</span></label>
-                            <input type="range" id="sphere-radius" min="0.1" max="0.5" value="0.25" step="0.05">
-                        </div>
-                    </div>
-
-                    <div class="control-section hidden" id="molecular-controls">
-                        <h3>Molecular Dynamics Parameters</h3>
-                        <div class="control-group">
-                            <label for="num-particles">Number of Particles: <span id="num-particles-val">216</span></label>
-                            <input type="range" id="num-particles" min="64" max="1000" value="216" step="8">
-                        </div>
-                        <div class="control-group">
-                            <label for="temperature">Temperature: <span id="temperature-val">300</span></label>
-                            <input type="range" id="temperature" min="100" max="500" value="300" step="10">
-                        </div>
-                        <div class="control-group">
-                            <label for="cutoff">LJ Cutoff (σ): <span id="cutoff-val">2.5</span></label>
-                            <input type="range" id="cutoff" min="1.5" max="4.0" value="2.5" step="0.1">
-                        </div>
-                    </div>
-
-                    <div class="control-actions">
-                        <button class="btn btn-primary" id="run-sim">Run Simulation</button>
-                        <button class="btn btn-secondary" id="reset-sim">Reset</button>
-                    </div>
-
-                    <div class="sim-info">
-                        <h4>Simulation Info</h4>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <span class="info-label">Time:</span>
-                                <span class="info-value" id="sim-time">0.00s</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">FPS:</span>
-                                <span class="info-value" id="sim-fps">0</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Energy:</span>
-                                <span class="info-value" id="sim-energy">0.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="playground-canvas">
-                    <canvas id="simulation-canvas"></canvas>
-                    <div class="canvas-overlay">
-                        <div class="overlay-hint" id="sim-hint">
-                            <strong>Rigid Body Physics Demo</strong><br>
-                            Orange and cyan spheres will drop and bounce on the grid below
-                        </div>
-                    </div>
-                    <div class="canvas-controls">
-                        <button class="canvas-btn" id="pause-btn" title="Pause">Pause</button>
-                        <button class="canvas-btn" id="rotate-btn" title="Auto-rotate">Rotate</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Code Section -->
     <section class="code-section">
         <div class="container">
@@ -309,6 +213,5 @@ ninja -C build
     </footer>
 
     <script src="js/main.js"></script>
-    <script src="js/simulation.js"></script>
 </body>
 </html>

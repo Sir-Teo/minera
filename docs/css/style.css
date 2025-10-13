@@ -313,209 +313,6 @@ body {
     color: var(--primary);
 }
 
-/* Playground Section */
-.playground {
-    padding: 80px 0;
-    background: var(--white);
-}
-
-.playground-content {
-    display: grid;
-    grid-template-columns: 400px 1fr;
-    gap: 40px;
-    margin-top: 40px;
-}
-
-.playground-controls {
-    background: var(--light);
-    padding: 32px;
-    border-radius: var(--radius);
-    height: fit-content;
-}
-
-.control-section {
-    margin-bottom: 32px;
-}
-
-.control-section h3 {
-    font-size: 18px;
-    margin-bottom: 16px;
-    color: var(--dark);
-}
-
-.button-group {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.sim-type-btn {
-    padding: 10px 16px;
-    border: 2px solid var(--primary);
-    background: var(--white);
-    color: var(--primary);
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s;
-    font-size: 14px;
-}
-
-.sim-type-btn:hover {
-    background: rgba(99, 102, 241, 0.1);
-}
-
-.sim-type-btn.active {
-    background: var(--primary);
-    color: var(--white);
-}
-
-.control-group {
-    margin-bottom: 20px;
-}
-
-.control-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: var(--dark);
-    font-size: 14px;
-}
-
-.control-group input[type="range"] {
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
-    background: #cbd5e1;
-    outline: none;
-    -webkit-appearance: none;
-}
-
-.control-group input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--primary);
-    cursor: pointer;
-}
-
-.control-group input[type="range"]::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--primary);
-    cursor: pointer;
-    border: none;
-}
-
-.control-actions {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.control-actions .btn {
-    flex: 1;
-}
-
-.sim-info {
-    padding: 20px;
-    background: var(--white);
-    border-radius: 8px;
-}
-
-.sim-info h4 {
-    margin-bottom: 16px;
-    color: var(--dark);
-}
-
-.info-grid {
-    display: grid;
-    gap: 12px;
-}
-
-.info-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--light);
-}
-
-.info-label {
-    font-weight: 600;
-    color: var(--gray);
-}
-
-.info-value {
-    font-weight: 600;
-    color: var(--primary);
-}
-
-.playground-canvas {
-    position: relative;
-    background: var(--dark-light);
-    border-radius: var(--radius);
-    overflow: hidden;
-    height: 600px;
-    box-shadow: var(--shadow-lg);
-}
-
-#simulation-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-.canvas-overlay {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    pointer-events: none;
-}
-
-.overlay-hint {
-    background: rgba(0, 0, 0, 0.7);
-    color: var(--white);
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    text-align: center;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-.canvas-controls {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    gap: 8px;
-}
-
-.canvas-btn {
-    padding: 10px 16px;
-    border: none;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.3s;
-    box-shadow: var(--shadow);
-}
-
-.canvas-btn:hover {
-    background: var(--white);
-    transform: translateY(-2px);
-}
-
-.hidden {
-    display: none;
-}
-
 /* Code Section */
 .code-section {
     padding: 80px 0;
@@ -630,20 +427,6 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-    .playground-content {
-        grid-template-columns: 1fr;
-    }
-
-    .playground-controls {
-        order: 2;
-    }
-
-    .playground-canvas {
-        order: 1;
-    }
-}
-
 @media (max-width: 768px) {
     .hero .container {
         grid-template-columns: 1fr;
@@ -686,10 +469,6 @@ body {
     .examples-grid {
         grid-template-columns: 1fr;
     }
-
-    .playground-canvas {
-        height: 400px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -711,14 +490,6 @@ body {
 
     .logo {
         font-size: 20px;
-    }
-
-    .button-group {
-        flex-direction: column;
-    }
-
-    .sim-type-btn {
-        width: 100%;
     }
 }
 
