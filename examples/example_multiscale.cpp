@@ -63,6 +63,10 @@ int main(){
   RigidBodySystemConfig rb_cfg;
   rb_cfg.restitution = 0.6;
   rb_cfg.ground_y = 0.0;
+  // Improve rigid-body contact stability
+  rb_cfg.substeps = 3;
+  rb_cfg.pair_iterations = 24;
+  rb_cfg.penetration_slop = 1e-4;
 
   MDConfig md_cfg;
   md_cfg.epsilon = 0.8;

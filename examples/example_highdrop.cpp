@@ -44,6 +44,10 @@ int main(){
   RigidBodySystemConfig rb_cfg;
   rb_cfg.restitution = 0.7;
   rb_cfg.ground_y = 0.0;
+  // Tighter collision solving for dense stacks
+  rb_cfg.substeps = 8;
+  rb_cfg.pair_iterations = 64;
+  rb_cfg.penetration_slop = 1e-5;
 
   world.scheduler.add(std::make_unique<RigidBodySystem>(rb_cfg), 1);
 
