@@ -64,11 +64,13 @@ class Simulation {
         // Get attribute and uniform locations
         this.positionLocation = gl.getAttribLocation(this.program, 'a_position');
         this.colorLocation = gl.getAttribLocation(this.program, 'a_color');
+        this.normalLocation = gl.getAttribLocation(this.program, 'a_normal');
         this.matrixLocation = gl.getUniformLocation(this.program, 'u_matrix');
 
         // Create buffers
         this.positionBuffer = gl.createBuffer();
         this.colorBuffer = gl.createBuffer();
+        this.normalBuffer = gl.createBuffer();
 
         // Initialize simulation
         this.reset();
@@ -80,21 +82,35 @@ class Simulation {
         const vertexShaderSource = `
             attribute vec3 a_position;
             attribute vec4 a_color;
+            attribute vec3 a_normal;
             uniform mat4 u_matrix;
             varying vec4 v_color;
+            varying vec3 v_normal;
+            varying vec3 v_position;
 
             void main() {
                 gl_Position = u_matrix * vec4(a_position, 1.0);
                 v_color = a_color;
+                v_normal = a_normal;
+                v_position = a_position;
             }
         `;
 
         const fragmentShaderSource = `
             precision mediump float;
             varying vec4 v_color;
+            varying vec3 v_normal;
+            varying vec3 v_position;
 
             void main() {
-                gl_FragColor = v_color;
+                // Simple directional lighting
+                vec3 lightDir = normalize(vec3(0.5, 1.0, 0.3));
+                vec3 normal = normalize(v_normal);
+                float diffuse = max(dot(normal, lightDir), 0.0);
+                float ambient = 0.4;
+                float lighting = ambient + diffuse * 0.6;
+
+                gl_FragColor = vec4(v_color.rgb * lighting, v_color.a);
             }
         `;
 
@@ -165,7 +181,7 @@ class Simulation {
                 ],
                 radius: radius,
                 mass: 1.0,
-                color: this.hslToRgb(0.6, 0.7, 0.6)
+                color: this.hslToRgb(0.55 + Math.random() * 0.1, 0.8, 0.55)
             });
         }
     }
@@ -313,9 +329,10 @@ class Simulation {
 
     renderSphere(sphere) {
         const gl = this.gl;
-        const segments = 8;
+        const segments = 12;
         const positions = [];
         const colors = [];
+        const normals = [];
         const indices = [];
 
         // Generate sphere vertices
@@ -329,12 +346,17 @@ class Simulation {
                 const sinPhi = Math.sin(phi);
                 const cosPhi = Math.cos(phi);
 
-                const x = sphere.position[0] + sphere.radius * cosPhi * sinTheta;
-                const y = sphere.position[1] + sphere.radius * cosTheta;
-                const z = sphere.position[2] + sphere.radius * sinPhi * sinTheta;
+                const nx = cosPhi * sinTheta;
+                const ny = cosTheta;
+                const nz = sinPhi * sinTheta;
+
+                const x = sphere.position[0] + sphere.radius * nx;
+                const y = sphere.position[1] + sphere.radius * ny;
+                const z = sphere.position[2] + sphere.radius * nz;
 
                 positions.push(x, y, z);
-                colors.push(...sphere.color, 0.9);
+                normals.push(nx, ny, nz);
+                colors.push(...sphere.color, 1.0);
             }
         }
 
@@ -353,6 +375,11 @@ class Simulation {
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
         gl.enableVertexAttribArray(this.positionLocation);
         gl.vertexAttribPointer(this.positionLocation, 3, gl.FLOAT, false, 0, 0);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(this.normalLocation);
+        gl.vertexAttribPointer(this.normalLocation, 3, gl.FLOAT, false, 0, 0);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
@@ -373,31 +400,45 @@ class Simulation {
     renderGroundPlane() {
         const gl = this.gl;
         const size = 10;
-        const positions = [
-            -size, 0, -size,
-            size, 0, -size,
-            size, 0, size,
-            -size, 0, size
-        ];
+        const gridSize = 10;
+        const positions = [];
+        const colors = [];
+        const normals = [];
 
-        const colors = [
-            0.3, 0.3, 0.3, 0.5,
-            0.3, 0.3, 0.3, 0.5,
-            0.3, 0.3, 0.3, 0.5,
-            0.3, 0.3, 0.3, 0.5
-        ];
+        // Render grid lines
+        for (let i = -gridSize; i <= gridSize; i++) {
+            const step = size / gridSize;
+            const pos = i * step;
+            const alpha = 0.3;
+            const color = i === 0 ? [0.5, 0.5, 0.5, alpha] : [0.3, 0.3, 0.3, alpha];
+
+            // Lines parallel to X axis
+            positions.push(-size, 0, pos, size, 0, pos);
+            colors.push(...color, ...color);
+            normals.push(0, 1, 0, 0, 1, 0);
+
+            // Lines parallel to Z axis
+            positions.push(pos, 0, -size, pos, 0, size);
+            colors.push(...color, ...color);
+            normals.push(0, 1, 0, 0, 1, 0);
+        }
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
         gl.enableVertexAttribArray(this.positionLocation);
         gl.vertexAttribPointer(this.positionLocation, 3, gl.FLOAT, false, 0, 0);
 
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(this.normalLocation);
+        gl.vertexAttribPointer(this.normalLocation, 3, gl.FLOAT, false, 0, 0);
+
         gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
         gl.enableVertexAttribArray(this.colorLocation);
         gl.vertexAttribPointer(this.colorLocation, 4, gl.FLOAT, false, 0, 0);
 
-        gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
+        gl.drawArrays(gl.LINES, 0, positions.length / 3);
     }
 
     getViewMatrix() {

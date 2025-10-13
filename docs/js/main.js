@@ -107,6 +107,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Run simulation button
+    const runBtn = document.getElementById('run-sim');
+    if (runBtn) {
+        runBtn.addEventListener('click', function() {
+            // Hide the overlay hint when simulation starts
+            const hint = document.querySelector('.overlay-hint');
+            if (hint) {
+                hint.style.display = 'none';
+            }
+        });
+    }
+
     // Reset simulation button
     const resetBtn = document.getElementById('reset-sim');
     if (resetBtn) {
