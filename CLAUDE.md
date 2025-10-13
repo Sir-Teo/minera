@@ -51,6 +51,7 @@ simcore/           # Core engine (no dependencies on physics modules)
 ├── math/          # Vec3 math primitives
 ├── state/         # Data containers: RigidBody, Particle, ParticleSet
 ├── scheduler/     # ISystem interface + Scheduler
+├── io/            # Output writers (CSV, VTK)
 └── world.hpp      # Top-level World container + orchestration
 
 modules/           # Physics implementations
@@ -129,10 +130,36 @@ MINERVA_LOG("Spawned %zu rigid bodies\n", world.rigid_bodies.size());
 - No periodic boundaries yet (free boundary conditions)
 - No neighbor lists yet (O(N²) all-pairs evaluation - future optimization target)
 
+### I/O System (`simcore/io/`)
+- **CSVWriter**: Outputs simulation data to CSV files for easy analysis
+  - Separate files for rigid bodies and MD particles
+  - Includes position, velocity, mass, and type-specific properties
+  - Time-series data with frame numbers
+
+- **VTKWriter**: Outputs VTK XML format (.vtu) for ParaView visualization
+  - Unstructured grid format with point data
+  - Generates .pvd collection files for time-series playback
+  - Supports velocity vectors, scalar fields (mass, radius)
+  - Usage: `paraview output/minerva_rb.pvd` or `minerva_md.pvd`
+
+Example usage:
+```cpp
+VTKWriterConfig cfg;
+cfg.output_dir = "output";
+cfg.prefix = "sim";
+auto writer = std::make_unique<VTKWriter>(cfg);
+
+// In simulation loop
+writer->write(world, frame_number);
+
+// At end
+writer->finalize(); // Creates .pvd collection files
+```
+
 ## Planned Extensions (from roadmap)
 
 Near-term high-leverage additions:
-1. CSV/VTK writers for visualization in ParaView
+1. ✅ CSV/VTK writers for visualization in ParaView
 2. Neighbor lists for MD (cell lists + Verlet skin) → 10-100× speedup
 3. Sphere-sphere rigid body collisions with impulse solver
 4. SPH fluids module (reuse MD neighbor infrastructure)

@@ -25,6 +25,11 @@ add_library(minerva_core
   simcore/state/particle.hpp
   simcore/scheduler/scheduler.hpp
   simcore/world.hpp
+  simcore/io/writer.hpp
+  simcore/io/csv_writer.hpp
+  simcore/io/csv_writer.cpp
+  simcore/io/vtk_writer.hpp
+  simcore/io/vtk_writer.cpp
   modules/rb/rigid_body_system.hpp
   modules/rb/rigid_body_system.cpp
   modules/md/md_system.hpp

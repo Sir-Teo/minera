@@ -1,9 +1,12 @@
 #include "simcore/world.hpp"
 #include "modules/rb/rigid_body_system.hpp"
 #include "modules/md/md_system.hpp"
+#include "simcore/io/csv_writer.hpp"
+#include "simcore/io/vtk_writer.hpp"
 #include "simcore/base/log.hpp"
 #include <random>
 #include <iostream>
+#include <memory>
 
 using namespace minerva;
 
@@ -59,24 +62,51 @@ int main(){
   world.scheduler.add(std::make_unique<RigidBodySystem>(rb_cfg), /*substeps*/1);
   world.scheduler.add(std::make_unique<MDSystem>(md_cfg), /*substeps*/1);
 
+  // --- I/O setup
+  CSVWriterConfig csv_cfg;
+  csv_cfg.output_dir = "output";
+  csv_cfg.prefix = "minerva";
+  auto csv_writer = std::make_unique<CSVWriter>(csv_cfg);
+
+  VTKWriterConfig vtk_cfg;
+  vtk_cfg.output_dir = "output";
+  vtk_cfg.prefix = "minerva";
+  auto vtk_writer = std::make_unique<VTKWriter>(vtk_cfg);
+
   // --- Simulate
   const double dt = 1.0/120.0;  // small time step
   const int steps = 1200;
+  const int output_interval = 10; // Output every 10 steps
 
+  MINERVA_LOG("Starting simulation: %d steps, dt=%.6f\n", steps, dt);
+  MINERVA_LOG("Output every %d steps to ./output/\n", output_interval);
+
+  int frame = 0;
   for (int s=0; s<steps; ++s){
     world.step(dt);
 
+    // Write output periodically
+    if (s % output_interval == 0) {
+      csv_writer->write(world, frame);
+      vtk_writer->write(world, frame);
+      ++frame;
+    }
+
+    // Print progress
     if (s % 120 == 0){
-      // Print one RB and one MD particle as a quick sanity readout
       const auto& rb = world.rigid_bodies.front();
       const auto& mp = world.md_particles.data.front();
       std::cout << "t=" << world.time
                 << "  RB.y=" << rb.position.y
                 << "  MD.v2=" << mp.velocity.norm2()
-                << "\n";
+                << "  (frame " << frame << ")\n";
     }
   }
 
+  // Finalize VTK collection files
+  vtk_writer->finalize();
+
   MINERVA_LOG("Done. Final time: %.3f s\n", world.time);
+  MINERVA_LOG("Wrote %d frames. Open output/minerva_rb.pvd or minerva_md.pvd in ParaView.\n", frame);
   return 0;
 }

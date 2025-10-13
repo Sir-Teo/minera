@@ -2,6 +2,9 @@
 build/
 cmake-build-*/
 
+# Output files
+output/
+
 # IDE files
 .vscode/
 .idea/
