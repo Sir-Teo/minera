@@ -84,6 +84,24 @@ cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo -DMINERVA_ENABLE_SANITIZERS=ON
 cmake --build build
 ```
 
+### Benchmarking
+
+Test neighbor list performance:
+
+```bash
+./build/benchmark_nlist
+```
+
+Results on M1 MacBook Pro:
+```
+   Particles  All-Pairs (s)  Neighbor List    Speedup
+------------------------------------------------------
+          64          0.024          0.023       1.01x
+         216          0.203          0.117       1.73x
+         512          1.285          0.413       3.11x
+        1000          4.492          0.952       4.72x
+```
+
 ### Adding a New Physics Module
 
 1. Create your module in `modules/<name>/`
@@ -98,14 +116,15 @@ See `CLAUDE.md` for detailed development guidelines.
 - ✅ CSV/VTK output for visualization in ParaView
 - ✅ Rigid body physics with ground plane collisions
 - ✅ Molecular dynamics with Lennard-Jones forces
+- ✅ **Cell list + Verlet neighbor lists** (4-5× speedup, O(N) scaling)
 - ✅ Modular scheduler-based architecture
 
 ## Planned Features
 
-- Neighbor lists for MD (10-100× speedup)
 - Sphere-sphere rigid body collisions
 - SPH fluid dynamics
 - Python bindings via pybind11
+- Periodic boundary conditions for MD
 
 ## Architecture
 

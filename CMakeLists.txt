@@ -30,6 +30,8 @@ add_library(minerva_core
   simcore/io/csv_writer.cpp
   simcore/io/vtk_writer.hpp
   simcore/io/vtk_writer.cpp
+  simcore/spatial/neighbor_list.hpp
+  simcore/spatial/neighbor_list.cpp
   modules/rb/rigid_body_system.hpp
   modules/rb/rigid_body_system.cpp
   modules/md/md_system.hpp
@@ -40,3 +42,6 @@ target_include_directories(minerva_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(minerva_demo examples/minerva_demo.cpp)
 target_link_libraries(minerva_demo PRIVATE minerva_core)
+
+add_executable(benchmark_nlist examples/benchmark_nlist.cpp)
+target_link_libraries(benchmark_nlist PRIVATE minerva_core)
