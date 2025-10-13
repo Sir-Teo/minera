@@ -36,21 +36,25 @@ int main(){
     MINERVA_LOG("Multi-scale: %zu rigid bodies\n", world.rigid_bodies.size());
   }
 
-  // --- Part 2: MD particle cloud
+  // --- Part 2: MD particle cloud in a compact region
   {
     std::mt19937 rng(999);
-    std::uniform_real_distribution<double> pos_x(-2.0, 2.0);
-    std::uniform_real_distribution<double> pos_y(0.5, 3.0);
-    std::uniform_real_distribution<double> pos_z(-2.0, 2.0);
-    std::normal_distribution<double> vel(0.0, std::sqrt(1.0));
+    std::normal_distribution<double> vel(0.0, std::sqrt(0.5));  // Lower initial velocity
 
-    // Create a cloud of 300 particles
-    for (int i=0; i<300; ++i){
-      Particle p;
-      p.mass = 1.0;
-      p.position = Vec3(pos_x(rng), pos_y(rng), pos_z(rng));
-      p.velocity = Vec3(vel(rng), vel(rng), vel(rng));
-      world.md_particles.push(p);
+    const int n_side = 7;  // 7x7x7 = 343 particles in a grid
+    const double spacing = 1.1;  // Compact spacing
+
+    for (int i=0; i<n_side; ++i){
+      for (int j=0; j<n_side; ++j){
+        for (int k=0; k<n_side; ++k){
+          Particle p;
+          p.mass = 1.0;
+          // Place in a corner away from rigid bodies
+          p.position = Vec3(3.0 + i*spacing, 0.5 + j*spacing, -3.0 + k*spacing);
+          p.velocity = Vec3(vel(rng), vel(rng), vel(rng));
+          world.md_particles.push(p);
+        }
+      }
     }
     MINERVA_LOG("Multi-scale: %zu MD particles\n", world.md_particles.size());
   }

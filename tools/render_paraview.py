@@ -72,11 +72,9 @@ def render_rigid_bodies(pvd_file, output_dir, image_format='png', frame_rate=30)
 
     # Create view
     view = CreateView('RenderView')
-    setup_rendering(view, {
-        'position': [3, 5, 8],
-        'focal_point': [0, 1, 0],
-        'view_up': [0, 1, 0]
-    })
+    view.ViewSize = [1920, 1080]
+    view.OrientationAxesVisibility = 1
+    view.Background = [0.95, 0.95, 0.95]
 
     # Show data
     display = Show(reader, view)
@@ -102,8 +100,14 @@ def render_rigid_bodies(pvd_file, output_dir, image_format='png', frame_rate=30)
 
     display.SetScalarBarVisibility(view, True)
 
-    # Reset camera to fit data
+    # Reset camera to fit ALL data (will compute bounds automatically)
     view.ResetCamera()
+
+    # Adjust camera for better angle (isometric-style view)
+    camera = GetActiveCamera()
+    camera.Elevation(20)
+    camera.Azimuth(30)
+    view.CameraViewUp = [0, 1, 0]
 
     return reader, view, display
 
@@ -116,12 +120,9 @@ def render_md_particles(pvd_file, output_dir, image_format='png', frame_rate=30)
 
     reader = PVDReader(FileName=pvd_file)
     view = CreateView('RenderView')
-
-    setup_rendering(view, {
-        'position': [5, 5, 10],
-        'focal_point': [5, 3, 2],
-        'view_up': [0, 1, 0]
-    })
+    view.ViewSize = [1920, 1080]
+    view.OrientationAxesVisibility = 1
+    view.Background = [0.95, 0.95, 0.95]
 
     display = Show(reader, view)
 
@@ -143,7 +144,14 @@ def render_md_particles(pvd_file, output_dir, image_format='png', frame_rate=30)
 
     display.SetScalarBarVisibility(view, True)
 
+    # Reset camera to fit ALL data
     view.ResetCamera()
+
+    # Adjust camera angle
+    camera = GetActiveCamera()
+    camera.Elevation(15)
+    camera.Azimuth(45)
+    view.CameraViewUp = [0, 1, 0]
 
     return reader, view, display
 
