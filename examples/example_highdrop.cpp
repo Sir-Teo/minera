@@ -22,6 +22,7 @@ int main(){
   const int layers_x = 8;
   const int layers_y = 15; // Very tall tower
   const int layers_z = 8;
+  const double spacing = 0.5; // Radius is 0.2, diameter is 0.4, so 0.5 gives 0.1 clearance
 
   for (int y=0; y<layers_y; ++y){
     for (int x=0; x<layers_x; ++x){
@@ -29,7 +30,7 @@ int main(){
         RigidBody rb;
         rb.radius = 0.2;
         rb.mass   = 1.0;
-        rb.position = Vec3(-1.6 + x*0.45, 8.0 + y*0.45, -1.6 + z*0.45);
+        rb.position = Vec3(-1.75 + x*spacing, 8.0 + y*spacing, -1.75 + z*spacing);
         // Add slight initial velocity for more dynamic behavior
         rb.velocity = Vec3(0, -0.5, 0);
         world.rigid_bodies.push_back(rb);
