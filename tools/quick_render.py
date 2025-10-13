@@ -113,8 +113,26 @@ def render_example(example_dir, output_video, fps=30, max_frames=300):
         vel_mag = np.linalg.norm(vel, axis=1)
         vel_mag = np.clip(vel_mag, 0, 10)
 
-        # Size based on radius
-        sizes = (radii * 100) ** 2
+        # Calculate proper sphere sizes in screen coordinates
+        # Matplotlib's scatter size is in points^2, need to scale based on data range
+        # Get axis range to convert data units to points
+        x_range = ax.get_xlim()[1] - ax.get_xlim()[0]
+        y_range = ax.get_ylim()[1] - ax.get_ylim()[0]
+        z_range = ax.get_zlim()[1] - ax.get_zlim()[0]
+        avg_range = (x_range + y_range + z_range) / 3.0
+
+        # Figure size in inches, DPI to get figure size in pixels
+        fig_width_inches = fig.get_figwidth()
+        fig_dpi = fig.get_dpi()
+        fig_width_pixels = fig_width_inches * fig_dpi
+
+        # Scale factor: points per data unit (rough approximation)
+        # This makes sphere visual size match their actual radius in data coordinates
+        scale_factor = fig_width_pixels / avg_range if avg_range > 0 else 1.0
+        scale_factor *= 0.4  # Scale down slightly for better visualization
+
+        # Size in points^2 for scatter plot
+        sizes = (radii * scale_factor) ** 2
 
         if scatter is not None:
             scatter.remove()
@@ -124,9 +142,9 @@ def render_example(example_dir, output_video, fps=30, max_frames=300):
             c=vel_mag,
             s=sizes,
             cmap='turbo',
-            alpha=0.8,
-            edgecolors='white',
-            linewidths=0.5
+            alpha=0.9,
+            edgecolors='none',
+            linewidths=0
         )
 
         return scatter,
