@@ -143,7 +143,7 @@ MINERVA_LOG("Spawned %zu rigid bodies\n", world.rigid_bodies.size());
   - Unstructured grid format with point data
   - Generates .pvd collection files for time-series playback
   - Supports velocity vectors, scalar fields (mass, radius)
-  - Usage: `paraview output/minerva_rb.pvd` or `minerva_md.pvd`
+  - Automatic rendering: `./tools/render images` or `./tools/render video`
 
 Example usage:
 ```cpp
@@ -158,6 +158,24 @@ writer->write(world, frame_number);
 // At end
 writer->finalize(); // Creates .pvd collection files
 ```
+
+### Visualization Tools (`tools/`)
+- **render**: Shell wrapper for automatic ParaView batch rendering
+  - Finds ParaView installation automatically
+  - Pre-configured camera angles and coloring
+  - `./tools/render images` - Generate PNG frames
+  - `./tools/render video` - Generate AVI animation
+
+- **render_paraview.py**: ParaView Python script
+  - Point Gaussian sphere rendering
+  - Velocity-based coloring
+  - Configurable resolution and framerate
+
+- **visualize.py**: Python/matplotlib alternative (no ParaView needed)
+  - 2D/3D matplotlib plots
+  - Direct MP4 video generation
+
+See `tools/README.md` for complete documentation.
 
 ## Planned Extensions (from roadmap)
 

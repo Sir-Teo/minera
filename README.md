@@ -39,22 +39,37 @@ This will run a simulation with 125 rigid spheres falling onto a ground plane an
 
 ### Visualizing Results
 
-The simulation outputs CSV and VTK files. To visualize in ParaView:
+**Automated Rendering (Recommended):**
 
 ```bash
-# Install ParaView (if not already installed)
+# Install ParaView
 brew install --cask paraview
 
-# Open the time-series collection files
+# Automatically generate images
+./tools/render images
+
+# Or generate video
+./tools/render video
+```
+
+Output will be in `output/renders/` (images) or `output/*.avi` (video).
+
+**Manual ParaView:**
+
+```bash
+# Open in ParaView GUI
 paraview output/minerva_rb.pvd  # Rigid bodies
 paraview output/minerva_md.pvd  # MD particles
 ```
 
-In ParaView:
-1. Click "Apply" to load the data
-2. Change representation to "Point Gaussian" or "Sphere" for better visualization
-3. Use the play button to animate through timesteps
-4. Color by "velocity", "mass", or other fields
+**Python Visualization (No ParaView needed):**
+
+```bash
+pip install numpy matplotlib
+python tools/visualize.py --video
+```
+
+See [tools/README.md](tools/README.md) for detailed visualization options.
 
 ## Project Structure
 
