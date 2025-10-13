@@ -3,6 +3,7 @@
 #include "simcore/io/csv_writer.hpp"
 #include "simcore/io/vtk_writer.hpp"
 #include "simcore/base/log.hpp"
+#include "simcore/utils/overlap_checker.hpp"
 #include <iostream>
 #include <memory>
 #include <random>
@@ -21,14 +22,14 @@ int main(){
   world.gravity = Vec3(0, -9.81, 0);
 
   std::mt19937 rng(2024);
-  std::uniform_real_distribution<double> jitter(-0.1, 0.1);
+  std::uniform_real_distribution<double> jitter(-0.02, 0.02); // Reduced jitter
 
   // Create a "slope" by placing spheres at various heights
   // and giving them a slight downhill velocity
   const double slope_angle = 25.0 * M_PI / 180.0; // 25 degree slope
   const int layers = 8;
   const int width = 10;
-  const double spacing = 0.45;
+  const double spacing = 0.5; // Increased spacing (was 0.45, radius is 0.2)
 
   for (int layer = 0; layer < layers; ++layer){
     // Each layer is progressively higher and further back
@@ -63,13 +64,15 @@ int main(){
 
   MINERVA_LOG("Avalanche: %zu spheres tumbling down slope\n", world.rigid_bodies.size());
 
+  // Check and resolve initial overlaps
+  resolve_initial_overlaps(world, 50);
+  check_rigid_body_overlaps(world);
+
   // System with low restitution for inelastic tumbling
   RigidBodySystemConfig rb_cfg;
   rb_cfg.restitution = 0.3; // Low bounce for realistic avalanche
   rb_cfg.ground_y = 0.0;
-  rb_cfg.substeps = 4;
-  rb_cfg.pair_iterations = 24;
-  rb_cfg.penetration_slop = 1e-4;
+  // Use improved defaults (substeps=4, pair_iterations=32 from config)
 
   world.scheduler.add(std::make_unique<RigidBodySystem>(rb_cfg), 1);
 

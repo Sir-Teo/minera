@@ -3,6 +3,7 @@
 #include "simcore/io/csv_writer.hpp"
 #include "simcore/io/vtk_writer.hpp"
 #include "simcore/base/log.hpp"
+#include "simcore/utils/overlap_checker.hpp"
 #include <iostream>
 #include <memory>
 #include <cmath>
@@ -56,6 +57,10 @@ int main(){
   planet.velocity = Vec3(0, 0, 0);
   planet.kinematic = true; // Fixed in place
   world.rigid_bodies.push_back(planet);
+
+  // Check and resolve initial overlaps
+  resolve_initial_overlaps(world, 50);
+  check_rigid_body_overlaps(world);
 
   MINERVA_LOG("Orbital Ring: %zu spheres in orbital motion\n", world.rigid_bodies.size());
 

@@ -3,6 +3,7 @@
 #include "simcore/io/csv_writer.hpp"
 #include "simcore/io/vtk_writer.hpp"
 #include "simcore/base/log.hpp"
+#include "simcore/utils/overlap_checker.hpp"
 #include <iostream>
 #include <memory>
 #include <cmath>
@@ -52,6 +53,10 @@ int main(){
   }
 
   MINERVA_LOG("Fountain: %zu spheres in fountain pattern\n", world.rigid_bodies.size());
+
+  // Check and resolve initial overlaps
+  resolve_initial_overlaps(world, 50);
+  check_rigid_body_overlaps(world);
 
   // System with medium restitution
   RigidBodySystemConfig rb_cfg;

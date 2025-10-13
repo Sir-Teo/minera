@@ -4,6 +4,7 @@
 #include "simcore/io/csv_writer.hpp"
 #include "simcore/io/vtk_writer.hpp"
 #include "simcore/base/log.hpp"
+#include "simcore/utils/overlap_checker.hpp"
 #include <iostream>
 #include <memory>
 #include <random>
@@ -35,6 +36,10 @@ int main(){
     }
     MINERVA_LOG("Multi-scale: %zu rigid bodies\n", world.rigid_bodies.size());
   }
+
+  // Check and resolve rigid body overlaps
+  resolve_initial_overlaps(world, 50);
+  check_rigid_body_overlaps(world);
 
   // --- Part 2: MD particle cloud in a compact region
   {

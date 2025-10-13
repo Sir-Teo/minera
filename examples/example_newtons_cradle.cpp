@@ -3,6 +3,7 @@
 #include "simcore/io/csv_writer.hpp"
 #include "simcore/io/vtk_writer.hpp"
 #include "simcore/base/log.hpp"
+#include "simcore/utils/overlap_checker.hpp"
 #include <iostream>
 #include <memory>
 
@@ -20,7 +21,7 @@ int main(){
 
   const int n_spheres = 7;
   const double radius = 0.3;
-  const double spacing = radius * 2.0; // Touching spheres
+  const double spacing = radius * 2.05; // Small buffer to prevent initial overlap
 
   // Create hanging spheres in a line
   for (int i = 0; i < n_spheres; ++i){
@@ -43,6 +44,10 @@ int main(){
   world.rigid_bodies[n_spheres-1].velocity = Vec3(-5.0, -1.0, 0.0);
 
   MINERVA_LOG("Newton's Cradle: %zu spheres\n", world.rigid_bodies.size());
+
+  // Check and resolve initial overlaps
+  resolve_initial_overlaps(world, 50);
+  check_rigid_body_overlaps(world);
 
   // System with very high restitution for elastic collisions
   RigidBodySystemConfig rb_cfg;
