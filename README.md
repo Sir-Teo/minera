@@ -4,6 +4,8 @@ A lightweight, scalable multi-physics simulation engine designed for Mac (Apple 
 
 [![CI](https://github.com/USER/minera/workflows/CI/badge.svg)](https://github.com/USER/minera/actions)
 
+**[View Interactive Demo](https://your-username.github.io/minera/)** | [Documentation](docs/) | [Examples](examples/)
+
 ## Features
 
 - **Modular Architecture**: Physics modules plug into a flexible scheduler system

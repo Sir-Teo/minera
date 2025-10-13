@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minerva - Multi-Physics Simulation Engine</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">Minerva</a>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#examples">Examples</a>
+                    <a href="#playground">Playground</a>
+                    <a href="https://github.com/anthropics/minera" target="_blank">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Minerva</h1>
+                <p class="hero-subtitle">Lightweight Multi-Physics Simulation Engine</p>
+                <p class="hero-description">
+                    A scalable simulation engine designed for Mac, covering macro-scale
+                    (rigid bodies, fluids) and micro-scale (molecular dynamics) physics
+                    with a modular architecture.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#playground" class="btn btn-primary">Try Playground</a>
+                    <a href="https://github.com/anthropics/minera" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <video autoplay loop muted playsinline class="hero-video">
+                    <source src="assets/videos/collision.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧩</div>
+                    <h3>Modular Architecture</h3>
+                    <p>Physics modules plug into a flexible scheduler system for easy extensibility</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚛️</div>
+                    <h3>Multi-Scale Physics</h3>
+                    <p>Handle both macro (rigid bodies) and micro (molecular dynamics) physics in a unified framework</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>High Performance</h3>
+                    <p>Cache-friendly data structures with O(N) neighbor lists achieving 4-5× speedup</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Lightweight</h3>
+                    <p>Minimal dependencies, CPU-first design optimized for Mac (Apple Silicon/Intel)</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Visualization Ready</h3>
+                    <p>CSV and VTK output for ParaView visualization and analysis</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Research Grade</h3>
+                    <p>Sanitizer-clean code with rigorous validation and correctness testing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="examples">
+        <div class="container">
+            <h2 class="section-title">Simulation Examples</h2>
+            <div class="examples-grid">
+                <div class="example-card">
+                    <div class="example-media">
+                        <video loop muted playsinline class="example-video" data-src="assets/videos/collision.mp4">
+                            <source data-src="assets/videos/collision.mp4" type="video/mp4">
+                        </video>
+                        <div class="play-overlay">▶</div>
+                    </div>
+                    <div class="example-content">
+                        <h3>Collision Cascade</h3>
+                        <p>Dramatic collision simulation demonstrating rigid body dynamics with restitution and ground plane interactions.</p>
+                        <div class="example-stats">
+                            <span class="stat">960 spheres</span>
+                            <span class="stat">Ground collisions</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-media">
+                        <video loop muted playsinline class="example-video" data-src="assets/videos/highdrop.mp4">
+                            <source data-src="assets/videos/highdrop.mp4" type="video/mp4">
+                        </video>
+                        <div class="play-overlay">▶</div>
+                    </div>
+                    <div class="example-content">
+                        <h3>High Drop</h3>
+                        <p>Large-scale drop test with multiple spheres falling from height, showcasing stability and collision resolution.</p>
+                        <div class="example-stats">
+                            <span class="stat">960 bodies</span>
+                            <span class="stat">Restitution: 0.5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-media">
+                        <video loop muted playsinline class="example-video" data-src="assets/videos/multiscale.mp4">
+                            <source data-src="assets/videos/multiscale.mp4" type="video/mp4">
+                        </video>
+                        <div class="play-overlay">▶</div>
+                    </div>
+                    <div class="example-content">
+                        <h3>Multi-Scale Coupling</h3>
+                        <p>Combined rigid body and molecular dynamics simulation demonstrating multi-physics integration.</p>
+                        <div class="example-stats">
+                            <span class="stat">RB + MD</span>
+                            <span class="stat">Lennard-Jones</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Playground Section -->
+    <section id="playground" class="playground">
+        <div class="container">
+            <h2 class="section-title">Interactive Playground</h2>
+            <p class="section-subtitle">Experiment with physics parameters in real-time</p>
+
+            <div class="playground-content">
+                <div class="playground-controls">
+                    <div class="control-section">
+                        <h3>Simulation Type</h3>
+                        <div class="button-group">
+                            <button class="sim-type-btn active" data-type="rigid-body">Rigid Body</button>
+                            <button class="sim-type-btn" data-type="molecular">Molecular Dynamics</button>
+                            <button class="sim-type-btn" data-type="multiscale">Multi-Scale</button>
+                        </div>
+                    </div>
+
+                    <div class="control-section" id="rigid-body-controls">
+                        <h3>Rigid Body Parameters</h3>
+                        <div class="control-group">
+                            <label for="num-spheres">Number of Spheres: <span id="num-spheres-val">50</span></label>
+                            <input type="range" id="num-spheres" min="10" max="200" value="50" step="10">
+                        </div>
+                        <div class="control-group">
+                            <label for="gravity">Gravity (m/s²): <span id="gravity-val">9.81</span></label>
+                            <input type="range" id="gravity" min="0" max="20" value="9.81" step="0.1">
+                        </div>
+                        <div class="control-group">
+                            <label for="restitution">Restitution: <span id="restitution-val">0.5</span></label>
+                            <input type="range" id="restitution" min="0" max="1" value="0.5" step="0.05">
+                        </div>
+                        <div class="control-group">
+                            <label for="sphere-radius">Sphere Radius: <span id="sphere-radius-val">0.25</span></label>
+                            <input type="range" id="sphere-radius" min="0.1" max="0.5" value="0.25" step="0.05">
+                        </div>
+                    </div>
+
+                    <div class="control-section hidden" id="molecular-controls">
+                        <h3>Molecular Dynamics Parameters</h3>
+                        <div class="control-group">
+                            <label for="num-particles">Number of Particles: <span id="num-particles-val">216</span></label>
+                            <input type="range" id="num-particles" min="64" max="1000" value="216" step="8">
+                        </div>
+                        <div class="control-group">
+                            <label for="temperature">Temperature: <span id="temperature-val">300</span></label>
+                            <input type="range" id="temperature" min="100" max="500" value="300" step="10">
+                        </div>
+                        <div class="control-group">
+                            <label for="cutoff">LJ Cutoff (σ): <span id="cutoff-val">2.5</span></label>
+                            <input type="range" id="cutoff" min="1.5" max="4.0" value="2.5" step="0.1">
+                        </div>
+                    </div>
+
+                    <div class="control-actions">
+                        <button class="btn btn-primary" id="run-sim">Run Simulation</button>
+                        <button class="btn btn-secondary" id="reset-sim">Reset</button>
+                    </div>
+
+                    <div class="sim-info">
+                        <h4>Simulation Info</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Time:</span>
+                                <span class="info-value" id="sim-time">0.00s</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">FPS:</span>
+                                <span class="info-value" id="sim-fps">0</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Energy:</span>
+                                <span class="info-value" id="sim-energy">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="playground-canvas">
+                    <canvas id="simulation-canvas"></canvas>
+                    <div class="canvas-controls">
+                        <button class="canvas-btn" id="pause-btn" title="Pause">⏸</button>
+                        <button class="canvas-btn" id="rotate-btn" title="Auto-rotate">🔄</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Section -->
+    <section class="code-section">
+        <div class="container">
+            <h2 class="section-title">Quick Start</h2>
+            <div class="code-example">
+                <div class="code-header">
+                    <span>C++</span>
+                    <button class="copy-btn" data-code="quickstart">Copy</button>
+                </div>
+                <pre><code id="quickstart">// Create world and add physics systems
+World world;
+
+RigidBodySystemConfig rb_cfg;
+rb_cfg.restitution = 0.5;
+rb_cfg.ground_y = 0.0;
+
+MDConfig md_cfg;
+md_cfg.rcut_sigma = 2.5;
+
+world.scheduler.add(std::make_unique&lt;RigidBodySystem&gt;(rb_cfg), 1);
+world.scheduler.add(std::make_unique&lt;MDSystem&gt;(md_cfg), 1);
+
+// Run simulation
+const double dt = 1.0/120.0;
+for (int i = 0; i &lt; steps; ++i) {
+    world.step(dt);
+}</code></pre>
+            </div>
+
+            <div class="install-section">
+                <h3>Installation</h3>
+                <div class="code-example">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button class="copy-btn" data-code="install">Copy</button>
+                    </div>
+                    <pre><code id="install">xcode-select --install
+brew install cmake ninja
+
+git clone https://github.com/anthropics/minera.git
+cd minera
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo
+ninja -C build
+./build/minerva_demo</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Minerva</h4>
+                    <p>Lightweight multi-physics simulation engine</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <a href="https://github.com/anthropics/minera">GitHub</a>
+                    <a href="https://github.com/anthropics/minera/issues">Issues</a>
+                    <a href="https://github.com/anthropics/minera/blob/main/docs/roadmap.md">Roadmap</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentation</h4>
+                    <a href="https://github.com/anthropics/minera/blob/main/README.md">README</a>
+                    <a href="https://github.com/anthropics/minera/blob/main/CLAUDE.md">Developer Guide</a>
+                    <a href="https://github.com/anthropics/minera/tree/main/examples">Examples</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Minerva Project. Open Source.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/simulation.js"></script>
+</body>
+</html>
