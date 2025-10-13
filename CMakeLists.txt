@@ -73,3 +73,18 @@ target_link_libraries(example_orbital_ring PRIVATE minerva_core)
 
 add_executable(example_domino_chain examples/example_domino_chain.cpp)
 target_link_libraries(example_domino_chain PRIVATE minerva_core)
+
+add_executable(example_fountain examples/example_fountain.cpp)
+target_link_libraries(example_fountain PRIVATE minerva_core)
+
+add_executable(example_vortex examples/example_vortex.cpp)
+target_link_libraries(example_vortex PRIVATE minerva_core)
+
+add_executable(example_gravity_well examples/example_gravity_well.cpp)
+target_link_libraries(example_gravity_well PRIVATE minerva_core)
+
+add_executable(example_crystal examples/example_crystal.cpp)
+target_link_libraries(example_crystal PRIVATE minerva_core)
+
+add_executable(example_wave examples/example_wave.cpp)
+target_link_libraries(example_wave PRIVATE minerva_core)
