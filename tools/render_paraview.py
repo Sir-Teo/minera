@@ -81,7 +81,7 @@ def render_rigid_bodies(pvd_file, output_dir, image_format='png', frame_rate=30)
 
     # Configure display - use Point Gaussian for spheres
     display.Representation = 'Point Gaussian'
-    display.GaussianRadius = 0.25  # Match sphere radius
+    display.GaussianRadius = 0.6  # Match sphere radius (increased for visibility)
     display.ShaderPreset = 'Sphere'
     display.Emissive = 0
 
