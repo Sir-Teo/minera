@@ -22,20 +22,20 @@ int main(){
 
   const int grid_x = 20;
   const int grid_z = 20;
-  const double spacing = 0.41; // Tight spacing (diameter is 0.4)
+  const double spacing = 1.05; // Tight spacing (diameter is 1.0)
 
   // Create a tightly packed grid of spheres on the ground
   for (int i = 0; i < grid_x; ++i){
     for (int k = 0; k < grid_z; ++k){
       RigidBody rb;
-      rb.radius = 0.2;
+      rb.radius = 0.5;
       rb.mass = 1.0;
 
       // Position on ground in tight grid
       rb.position = Vec3(
-        -4.0 + i * spacing,
-        0.2,  // Just above ground
-        -4.0 + k * spacing
+        -10.0 + i * spacing,
+        0.5,  // Just above ground
+        -10.0 + k * spacing
       );
 
       rb.velocity = Vec3(0, 0, 0);
@@ -45,10 +45,10 @@ int main(){
 
   // Add a projectile to create impact wave
   RigidBody projectile;
-  projectile.radius = 0.3;
+  projectile.radius = 0.75;
   projectile.mass = 5.0; // Heavy projectile
-  projectile.position = Vec3(-4.5, 5.0, -4.5); // Above corner
-  projectile.velocity = Vec3(8.0, -10.0, 8.0); // Fast diagonal strike
+  projectile.position = Vec3(-11.0, 8.0, -11.0); // Above corner
+  projectile.velocity = Vec3(12.0, -15.0, 12.0); // Fast diagonal strike
   world.rigid_bodies.push_back(projectile);
 
   MINERVA_LOG("Radial Impact Wave: %zu spheres + 1 projectile\n",
