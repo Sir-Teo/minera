@@ -25,15 +25,15 @@ int main(){
 
   // Create spheres in a 3D spiral
   for (int ring = 0; ring < n_rings; ++ring){
-    double radius = 12.0 - ring * 1.2; // Decreasing radius
-    double height = 8.0 + ring * 2.0;  // Increasing height
+    double radius = 16.0 - ring * 1.6; // Decreasing radius
+    double height = 12.0 + ring * 2.5;  // Increasing height
     double phase_offset = ring * 0.3;  // Spiral twist
 
     for (int i = 0; i < spheres_per_ring; ++i){
       double angle = 2.0 * M_PI * i / spheres_per_ring + phase_offset;
 
       RigidBody rb;
-      rb.radius = 0.6;
+      rb.radius = 1.0;
       rb.mass = 1.0;
 
       // Position in spiral

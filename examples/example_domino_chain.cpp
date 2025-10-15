@@ -21,30 +21,30 @@ int main(){
   world.gravity = Vec3(0, -9.81, 0);
 
   const int n_dominos = 40;
-  const double spacing = 1.05; // Ultra-tight spacing - nearly touching (diameter = 1.0)
+  const double spacing = 2.1; // Ultra-tight spacing - nearly touching (diameter = 2.0)
 
   // Create a serpentine/curved path of spheres on the ground
   for (int i = 0; i < n_dominos; ++i){
     RigidBody rb;
-    rb.radius = 0.5;
+    rb.radius = 1.0;
     rb.mass = 1.0;
 
     // Serpentine path: sine wave pattern
     double t = static_cast<double>(i) / 8.0;
-    double x = -12.0 + i * spacing;
-    double z = 4.0 * std::sin(t);
+    double x = -24.0 + i * spacing;
+    double z = 6.0 * std::sin(t);
 
-    rb.position = Vec3(x, 1.0, z); // Elevated to reduce ground friction
+    rb.position = Vec3(x, 2.0, z); // Elevated to reduce ground friction
     rb.velocity = Vec3(0, 0, 0);
     world.rigid_bodies.push_back(rb);
   }
 
   // Add a heavy projectile to strike the first domino
   RigidBody projectile;
-  projectile.radius = 0.75;
-  projectile.mass = 4.0;
-  projectile.position = Vec3(-15.0, 1.0, 0.0); // Same height as dominoes
-  projectile.velocity = Vec3(30.0, 0, 0); // Very fast horizontal strike
+  projectile.radius = 1.5;
+  projectile.mass = 8.0;
+  projectile.position = Vec3(-28.0, 2.0, 0.0); // Same height as dominoes
+  projectile.velocity = Vec3(40.0, 0, 0); // Very fast horizontal strike
   world.rigid_bodies.push_back(projectile);
 
   MINERVA_LOG("Domino Chain: %zu spheres + projectile in serpentine path\n", world.rigid_bodies.size());
