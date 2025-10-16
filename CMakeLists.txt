@@ -89,5 +89,8 @@ target_link_libraries(example_crystal PRIVATE minerva_core)
 add_executable(example_wave examples/example_wave.cpp)
 target_link_libraries(example_wave PRIVATE minerva_core)
 
+add_executable(example_double_helix examples/example_double_helix.cpp)
+target_link_libraries(example_double_helix PRIVATE minerva_core)
+
 add_executable(test_overlaps test_overlaps.cpp)
 target_link_libraries(test_overlaps PRIVATE minerva_core)
