@@ -21,11 +21,11 @@ int main(){
   World world;
   world.gravity = Vec3(0, -9.81, 0);
 
-  const double helix_radius = 1.8;
-  const double helix_height = 18.0;  // Increased for better vertical spacing
-  const double sphere_radius = 0.22;  // Slightly smaller
+  const double helix_radius = 1.5;
+  const double helix_height = 12.0;
+  const double sphere_radius = 0.25;
   const int turns = 4;
-  const int spheres_per_turn = 6;  // Reduced to avoid crowding
+  const int spheres_per_turn = 8;
   const int total_spheres = turns * spheres_per_turn;
 
   // Create first helix strand (red/left)
@@ -65,26 +65,26 @@ int main(){
   }
 
   // Add "base pair" connectors between the two strands
-  const int connectors = turns * 3; // 3 connectors per turn to avoid overlap
+  const int connectors = turns * 4; // 4 connectors per turn
   for (int i = 0; i < connectors; ++i){
-    double t = (double)i / connectors * turns * 2.0 * M_PI + 0.3; // Offset to avoid helix spheres
-    double height = (double)i / connectors * helix_height + 0.5; // Offset vertically
+    double t = (double)i / connectors * turns * 2.0 * M_PI;
+    double height = (double)i / connectors * helix_height;
 
     // Connector sphere between the two strands
     RigidBody rb;
-    rb.radius = sphere_radius * 0.75; // Smaller to avoid overlap
-    rb.mass = 0.75;
+    rb.radius = sphere_radius * 0.8; // Slightly smaller
+    rb.mass = 0.8;
 
-    // Position at 60% distance from center (not exactly halfway)
+    // Position halfway between the two helices
     double x1 = helix_radius * std::cos(t);
     double z1 = helix_radius * std::sin(t);
     double x2 = helix_radius * std::cos(t + M_PI);
     double z2 = helix_radius * std::sin(t + M_PI);
 
     rb.position = Vec3(
-      (x1 + x2) * 0.3,  // Closer to center
+      (x1 + x2) / 2.0,
       height + 5.0,
-      (z1 + z2) * 0.3
+      (z1 + z2) / 2.0
     );
     rb.velocity = Vec3(0, 0, 0);
     world.rigid_bodies.push_back(rb);
